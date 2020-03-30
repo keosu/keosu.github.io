@@ -1,41 +1,35 @@
 <!DOCTYPE html>
 <html>
-
-
-
-<body style="background-color:rgb(56, 54, 54);">
-    <div id='xx'></div>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script lang="javascript">
-        function readTextFile(file) {
-            var rawFile = new XMLHttpRequest();
-            rawFile.open("GET", file, false);
-            rawFile.onreadystatechange = function () {
-                if (rawFile.readyState === 4) {
-                    if (rawFile.status === 200 || rawFile.status == 0) {
-                        var allText = rawFile.responseText;
-                        document.getElementById('xx').innerHTML = marked(allText);
-                    }
+<script lang="javascript">
+    function readTextFile(file) {
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                if (rawFile.status === 200 || rawFile.status == 0) {
+                    var allText = rawFile.responseText;
+                    document.getElementById('xx').innerHTML = marked(allText);
                 }
             }
-            rawFile.send(null);
         }
-        function readList(file) {
-            var rawFile = new XMLHttpRequest();
-            rawFile.open("GET", file, false);
-            rawFile.onreadystatechange = function () {
-                if (rawFile.readyState === 4) {
-                    if (rawFile.status === 200 || rawFile.status == 0) {
-                        var allText = rawFile.responseText;
-                        document.getElementById('xx').innerHTML = allText;
-                    }
+        rawFile.send(null);
+    }
+    function readList(file) {
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                if (rawFile.status === 200 || rawFile.status == 0) {
+                    var allText = rawFile.responseText;
+                    document.getElementById('xx').innerHTML = allText;
                 }
             }
-            rawFile.send(null);
         }
+        rawFile.send(null);
+    }
 
 
-        readTextFile("./test.md");
+       // readTextFile("./test.md");
         //readList(".");
         // var x = new FileReader()
         // xxx = x.readAsText('./test.md')
@@ -43,7 +37,20 @@
         //document.getElementById('xx').innerHTML = "xxx";
 
 
-    </script>
+</script>
+
+
+<body style="background-color:rgb(58, 61, 51);">
+    <div style="float: left;border: 2pt;width: 50pt;">
+        <div onclick="readTextFile('./README.md');">file1</div>
+        <div onclick="readTextFile('./test.md');">file2</div>
+    </div>
+
+
+
+    <div id='xx' style="border: 2pt;float: right;"></div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 </body>
 
 </html>
