@@ -1,5 +1,25 @@
 <!DOCTYPE html>
 <html>
+
+<style>
+    .left {
+        width: 200px;
+        height: 100%;
+        background: grey;
+        float: left;
+        display: table;
+        text-align: center;
+        color: #fff;
+    }
+
+    .right {
+        margin-left: 210px;
+        height: 600px;
+        background: lightslategray;
+        text-align: center;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script lang="javascript">
     function readTextFile(file) {
         var rawFile = new XMLHttpRequest();
@@ -40,16 +60,18 @@
 </script>
 
 
-<body style="background-color:rgb(58, 61, 51);">
-    <div style="float: left;border: 2pt;width: 50pt;">
-        <div onclick="readTextFile('./README.md');">file1</div>
-        <div onclick="readTextFile('./test.md');">file2</div>
-    </div>
+<body style="background-color:rgb(142, 145, 137);">
 
 
-
-    <div id='xx' style="border: 2pt;float: right;"></div>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <body>
+        <div class="left">
+            <div onclick="readTextFile('./README.md');">file1</div>
+            <div onclick="readTextFile('./test.md');">file2</div>
+        </div>
+        <div class="right">
+            <div id='xx' style="border: 2pt;float: right;"></div>
+        </div>
+    </body>
 
 </body>
 
