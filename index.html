@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+    .left {
+        width: 200px;
+        height: 100%;
+        background: grey;
+        float: left;
+        display: table;
+        text-align: center;
+        color: #fff;
+    }
+
+    .right {
+        margin-left: 210px;
+        height: 600px;
+        background: lightslategray;
+        text-align: center;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script lang="javascript">
+    function readTextFile(file) {
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                if (rawFile.status === 200 || rawFile.status == 0) {
+                    var allText = rawFile.responseText;
+                    document.getElementById('xx').innerHTML = marked(allText);
+                }
+            }
+        }
+        rawFile.send(null);
+    }
+    function readList(file) {
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                if (rawFile.status === 200 || rawFile.status == 0) {
+                    var allText = rawFile.responseText;
+                    document.getElementById('xx').innerHTML = allText;
+                }
+            }
+        }
+        rawFile.send(null);
+    }
+
+
+       // readTextFile("./test.md");
+        //readList(".");
+        // var x = new FileReader()
+        // xxx = x.readAsText('./test.md')
+        // var files = fs.readdirSync('.');
+        //document.getElementById('xx').innerHTML = "xxx";
+
+
+</script>
+
+
+<body style="background-color:rgb(142, 145, 137);">
+
+
+    <body>
+        <div class="left">
+            <div onclick="readTextFile('./README.md');">file1</div>
+            <div onclick="readTextFile('./test.md');">file2</div>
+        </div>
+        <div class="right">
+            <div id='xx' style="border: 2pt;float: right;"></div>
+        </div>
+    </body>
+
+</body>
+
+</html>
