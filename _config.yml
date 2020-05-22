@@ -32,7 +32,9 @@
 # in the templates via {{ site.myvariable }}.
 title: Simple ~
 subtitle: Keep Simple
-description: >-  Great Truths Are Always Simple # this means to ignore newlines until "baseurl:"
+description:  Great Truths Are Always Simple 
+# this means to ignore newlines until
+# this means to ignore newlines until "baseurl:"
 
 author: Yi
 email: jianlong.yi@outlook.com
