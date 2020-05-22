@@ -1,6 +1,6 @@
 ---
-title: Links Collection
-subtitle: 链接
+title: 链接
+subtitle: 
 layout: "page"
 icon: fa-book
 order: 3
