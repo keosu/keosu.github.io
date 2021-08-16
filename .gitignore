@@ -3,7 +3,9 @@
 *.a
 *.S
 *.i
+*.exe
 
 build
 debug
 tmp
+tmp*
