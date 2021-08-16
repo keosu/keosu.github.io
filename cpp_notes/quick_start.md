@@ -122,3 +122,65 @@ int main(int argc,char** argv) {
 - 表示只读，如果是想表示编译期常量，C++11后使用`constexpr`
 - 函数参数能使用const尽量用const，确保不会被修改
 - 类的成员函数用const修饰，表示函数内不会有修改操作
+
+# 类
+
+## 类的特殊成员函数
+```cpp
+class X {
+  X();
+  ~X();
+  X(const X& x); // 拷贝构造
+  X& operator=(const X& x); // 拷贝赋值
+  X(X&& x); // 移动构造，C++11引入
+  X& operator=(X&& x); // 移动赋值，C++11引入
+};
+```
+**注意：**  
+1. 当类的定义中没有显示定义时，编译器会默认生成 
+2. 当你的设计明确不需要某个函数，使用delete禁用  
+> ``` X(const X& x) = delete; ```  
+
+3. 当你重载了一个构造函数，默认构造函数会被覆盖，如果需要，使用default  
+> ``` X() = default; ```  
+
+何时需要定义这些特殊的成员函数？有三个原则：
+- 0原则：如果不需要自定义析构函数，通过除构造函数外其他五个都不需要定义
+- 3原则：当需要自定义拷贝构造函数时，通常析构函数、拷贝赋值也需要定义 
+- 5原则：当需要自定义移动构造函数时，通常析构函数、拷贝构造、拷贝赋值和移动赋值也需要定义 
+
+## 多态
+概念：
+- 虚函数：使用virtual生命的类成员函数
+- 纯虚函数：虚函数原型后加" = 0 "
+- 抽象类：含有纯虚函数的类，不能直接实例化，一般用作接口定义
+```cpp
+class X {
+  virtual void abc();
+  virtual void def() = 0;
+};
+``` 
+重载、隐藏和重写
+- 重载overload: 同一类中，函数名相同，参数不同
+- 隐藏override: 父子类中，函数名相同
+- 覆盖/重写overwrite: 父子类中，相同签名的虚函数  
+**注意**  
+隐藏的父类函数，仍可以通过父类访问
+
+多态：  
+- 虚函数实现通过基类指针访问子类成员的运行时多态；  
+- 重载可以看作编译时的多态  
+- 另外，可以通过奇异递归模板模式（curiously recurring template pattern，CRTP）实现编译时多态：这种方式把派生类作为基类的模板参数
+```cpp
+template <typename T>
+class Base {
+public:
+  void doWhat() {
+    T& derived = static_cast<T&>(*this);
+    // use derived...
+  }
+}; 
+class Derived : public Base<Derived> {
+  // ...
+};
+```
