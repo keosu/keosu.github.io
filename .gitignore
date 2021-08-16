@@ -1,0 +1,9 @@
+*.o
+*.so
+*.a
+*.S
+*.i
+
+build
+debug
+tmp
