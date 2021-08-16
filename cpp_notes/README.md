@@ -1,7 +1,5 @@
 # CS Notes
 
-## [Introduction](quick_start.md)  
+## [C++入门](quick_start.md)  
 
-## Tools
-
-## Algorithms 
+## [C++ STL](cpp_stl.md) 
