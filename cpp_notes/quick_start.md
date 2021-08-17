@@ -1,7 +1,9 @@
 # C++简介
 
 C++ 是一种静态类型的、编译式的、通用的、大小写敏感的、不规则的编程语言，支持过程化编程、面向对象编程和泛型编程。  
-C++ 是由Bjarne Stroustrup于1979年在新泽西州美利山贝尔实验室开始设计开发的。
+C++ 是由Bjarne Stroustrup于1979年在贝尔实验室开始设计开发的。
+主要的C++编译器有gcc、MSVC、clang等。
+
 
 # C++编译运行过程
 
@@ -131,7 +133,15 @@ int main(int argc,char** argv) {
 3. 指针传参的时候，还是值传递，指针本身的值不可以修改，需要通过解引用才能对指向的对象进行操作
 引用传参的时候，传进来的就是变量本身，因此变量可以被修改
 
-# 类
+## 数组
+```cpp
+double a[10];
+double b[5] = {1000.0, 2.0, 3.4, 17.0, 50.0};
+// C++11 后引入std::array
+std::array<double, 5> x = {1,2,3,4,5};
+```
+
+# 面向对象
 
 ## 类的特殊成员函数
 ```cpp
@@ -279,14 +289,16 @@ template<typename T>
 bool bignumber<T>::operator<(const bignumber& b) const{
     return _v < b._v;
 }
-
-int main()
-{
-    bignumber<> a(1), b(1); // 使用默认参数，"<>"不能省略
-    std::cout << equivalent(a, b) << '\n'; // 函数模板参数自动推导
-    std::cout << equivalent<double>(1, 2) << '\n';
-    std::cin.get();    return 0;
-}
+// 非类型模板：MAX_SIZE
+template<typename T, int MAX_SIZE>
+struct Stack {
+    void push(const T&);
+    T pop();
+    
+private:
+    T elems[MAX_SIZE];
+    int size;
+};
 ```
 # 信号处理
 信号是操作系统与进程通信的一种方式。  
