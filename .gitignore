@@ -9,3 +9,6 @@ build
 debug
 tmp
 tmp*
+
+.vscode
+*.txt
