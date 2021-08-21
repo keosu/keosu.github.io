@@ -1,93 +1,81 @@
-# 条款十三：优先考虑`const_iterator`而非`iterator`
+# 条款13: 比起iterator优先使用const_iterator
 
-**Item 13: Prefer `const_iterators` to `iterators`**
+STL中的`const_iterator`等价于pointers-to-const（指向const值的指针）。它们指向的值不能被修改。使用const的标准做法是，每当你不需要修改iterator指向的值的时候，你都应该使用`const_iterator`。
 
-STL `const_iterator`等价于指向常量的指针（pointer-to-`const`）。它们都指向不能被修改的值。标准实践是能加上`const`就加上，这也指示我们需要一个迭代器时只要没必要修改迭代器指向的值，就应当使用`const_iterator`。
-
-上面的说法对C++11和C++98都是正确的，但是在C++98中，标准库对`const_iterator`的支持不是很完整。首先不容易创建它们，其次就算你有了它，它的使用也是受限的。假如你想在`std::vector<int>`中查找第一次出现1983（C++代替C with classes的那一年）的位置，然后添加1998（第一个ISO C++标准被接纳的那一年）。如果*vector*中没有1983，那么就在*vector*尾部添加。在C++98中使用`iterator`可以很容易做到：
-
+这对C++98和C++11来说都是对的，但是在C++98中，`const_iterator`只能算勉强支持。我们无法简单地创建它们，并且一旦你创建了一个`const_iterator`，你使用的范围就被限制了。举个例子，假设你想要找到std::vector中的第一个1983（用“C++”替代“C with Classes”来作为名字的那一年），并且在那个位置插入一个1998（那一年，第一个IOS C++标准被采用）。如果vector中没有1983，插入的位置应该是vector的最后面。在C++98中，使用iterator来实现，这很简单：
 ```cpp
-std::vector<int> values;
-…
-std::vector<int>::iterator it =
-    std::find(values.begin(), values.end(), 1983);
+std::vector<int> values; 
+// ... 
+std::vector<int>::iterator it = std::find(values.begin(), values.end(), 1983);
 values.insert(it, 1998);
 ```
-
-但是这里`iterator`真的不是一个好的选择，因为这段代码不修改`iterator`指向的内容。用`const_iterator`重写这段代码是很平常的，但是在C++98中就不是了。下面是一种概念上可行但是不正确的方法：
+但是iterator在这不是最合适的选择，因为这段代码从来没有修改iterator指向的东西。把代码修改成const_iterator的版本“应该”很简单，但是在C++98中却不简单。这里有一种方法，从概念上来说是可靠的，但是它还是不正确的：
 
 ```cpp
-typedef std::vector<int>::iterator IterT;               //typedef
+typedef std::vector<int>::iterator IterT;           //typedef
 typedef std::vector<int>::const_iterator ConstIterT;
 
-std::vector<int> values;
-…
-ConstIterT ci =
-    std::find(static_cast<ConstIterT>(values.begin()),  //cast
-              static_cast<ConstIterT>(values.end()),    //cast
-              1983);
+std;;vector<int> values; 
+// ... 
+ConstIterT ci =  std::find(static_cast<ConstIterT>(values.begin()),
+              static_cast<ConstIterT>(values.end()), 1983);
 
-values.insert(static_cast<IterT>(ci), 1998);    //可能无法通过编译，
-                                                //原因见下
+values.insert(static_cast<IterT>(ci), 1998);        //可能无法编译，详情看下面
 ```
+typedef不是必须的，但是他们让代码中的cast更容易写一些。（如果你对于我为什么用typedef代替Item 9中推荐的别名声明（alias declaration），这是因为，这个例子展示的是C++98的代码，而别名声明（alias declaration）是C++11中的新特性。）
 
-`typedef`不是强制的，但是可以让代码中的*cast*更好写。（你可能想知道为什么我使用`typedef`而不是[Item9]提到的别名声明，因为这段代码在演示C++98做法，别名声明是C++11加入的特性）
+在std::find调用中使用cast是因为values是一个non-const容器，然后在C++98中，这里没有简单的办法从non-const容器中获取一个`const_iterator`。cast不是必须的，因为用别的方式来获取`const_iterator`也是可能的（比如，你可以把values绑定到一个reference-to-const变量（就是const T&类型的值），然后在你的代码中用那个值代替values就可以了），但是不管通过哪种方式，通过一个non-const容器，获取它的`const_iterator`的过程都是很曲折的。
 
-之所以`std::find`的调用会出现类型转换是因为在C++98中`values`是non-`const`容器，没办法简简单单的从non-`const`容器中获取`const_iterator`。严格来说类型转换不是必须的，因为用其他方法获取`const_iterator`也是可以的（比如你可以把`values`绑定到reference-to-`const`变量上，然后再用这个变量代替`values`），但不管怎么说，从non-`const`容器中获取`const_iterator`的做法都有点别扭。
+一旦你得到了`const_iterator`，事情变得更加糟糕了，因为在C++98中，只有iterator才能给插入（insertion）及删除（erasure）“定位”。`const_iterator`是不被接受的。这就是为什么，在上面的代码中，我把`const_iterator`（我好不容器从std::find中得到的）转换成了iterator（传入一个`const_iterator`给insert将无法编译）。
 
-当你费劲地获得了`const_iterator`，事情可能会变得更糟，因为C++98中，添加操作（以及删除操作）的位置只能由`iterator`指定，`const_iterator`是不被接受的。这也是我在上面的代码中，将`const_iterator`（我那么小心地从`std::find`搞出来的东西）转换为`iterator`的原因，因为向`insert`传入`const_iterator`不能通过编译。
+说实话，我给出的代码可能也无法编译，因为即使使用static_cast（甚至是众所周知的杀手锏reinterpret_cast），使`const_iterator`转换成iterator也是无法移植的。（这不是C++98的限制，在C++11中，也是这样的。无论它看起来多像是可移植的，`const_iterator`都不能简单地转换到iterator。）这里有一些可移植的方法来产生一个iterator（指向`const_iterator`指向的地方），但是他们都很复杂，不通用，并且不值得在本书中讨论。除此之外，我希望我的观点能清楚地向你传达：`const_iterator`在C++98中是个大麻烦，它们不值得使用。最后，开发人员都尽量不使用const，只在必要的情况下使用它，而且在C++98中，`const_iterator`太不实用了。
 
-老实说，上面的代码也可能无法编译，因为没有一个可移植的从`const_iterator`到`iterator`的方法，即使使用`static_cast`也不行。甚至`reinterpret_cast`也不行。（它不是C++98的限制，也不是C++11的限制，只是`const_iterator`就是不能转换为`iterator`，不管看起来对它们施以转换是有多么合理。）不过有办法生成一个`iterator`，使其指向和`const_iterator`指向相同，但是看起来不明显，也没有广泛应用，在这本书也不值得讨论。除此之外，我希望目前我陈述的观点是清晰的：`const_iterator`在C++98中会有很多问题，不如`iterator`有用。C++98的`const_iterator`不是那么实用。
+在C++11中，一切都变了。现在`const_iterator`已经变得容易获得以及容易使用了。容器（即使是non-const容器）的成员函数cbegin和cend产生一个`const_iterator`，并且原本在STL中，只使用iterator定位（比如，insert和erase）的成员函数现在也能使用`const_iterator`来定位了。把最初使用iterator的C++98版本的代码修改成使用`const_iterator`的C++11版本的代码真是太简单了：
 
-所有的这些都在C++11中改变了，现在`const_iterator`既容易获取又容易使用。容器的成员函数`cbegin`和`cend`产出`const_iterator`，甚至对于non-`const`容器也可用，那些之前使用*iterator*指示位置（如`insert`和`erase`）的STL成员函数也可以使用`const_iterator`了。使用C++11 `const_iterator`重写C++98使用`iterator`的代码也稀松平常：
 ```cpp
-std::vector<int> values;                                //和之前一样
-…
-auto it =                                               //使用cbegin
-	std::find(values.cbegin(), values.cend(), 1983);//和cend
+std::vector<int> values;  
+auto it = std::find(values.cbegin(), values.cend(), 1983);    
 values.insert(it, 1998);
 ```
-现在使用`const_iterator`的代码就很实用了！
+现在，代码用上了实用的`const_iterator`。
 
-唯一一个C++11对于`const_iterator`支持不足（译注：C++14支持但是C++11的时候还没）的情况是：当你想写最大程度通用的库，并且这些库代码为一些容器和类似容器的数据结构提供`begin`、`end`（以及`cbegin`，`cend`，`rbegin`，`rend`等）作为**非成员函数**而不是成员函数时。其中一种情况就是原生数组，还有一种情况是一些只由自由函数组成接口的第三方库。（译注：自由函数*free function*，指的是非成员函数，即一个函数，只要不是成员函数就可被称作*free function*）最大程度通用的库会考虑使用非成员函数而不是假设成员函数版本存在。
+在C++11中，对于`const_iterator`的支持，唯一不足的情况就是在你想写一个最大限度的通用库的时候。比起让客户使用成员函数，这样的库代码需要考虑为容器和“类容器”提供non-member版本的begin和end（加上cbegin，cend，rbegin等）。举个例子，为了built-in数组需要这么做，为了一些只提供接口（包含一些函数）的三方库也要这么做。因此最大限度的通用库需要提供non-member版本的函数，而不是去假设所有“容器”都有成员函数。
 
-举个例子，我们可以泛化下面的`findAndInsert`：
+举个例子，我们能把我们讨论的东西添加到findAndInsert模板中，像下面这样写：
 
 ```cpp
 template<typename C, typename V>
-void findAndInsert(C& container,            //在容器中查找第一次
-                   const V& targetVal,      //出现targetVal的位置，
-                   const V& insertVal)      //然后在那添加insertVal
+void findAndInsert(C& container,                
+                   const V& targetVal,
+                   const V& insertVal)
 {
     using std::cbegin;
     using std::cend;
 
-    auto it = std::find(cbegin(container),  //非成员函数cbegin
-                        cend(container),    //非成员函数cend
-                        targetVal);
+    auto it = std::find(cbegin(container),      //non-member版本的cbegin
+                        cend(container),        //non-member版本的cend
+                        targetVal); 
     container.insert(it, insertVal);
 }
 ```
+这在C++14中工作得很好，但是，很遗憾，在C++11却无法很好地工作。由于制定标准时的疏忽，C++11只添加了non-member版本的begin和end函数，但是他们没有添加相应的cbegin，cend，rbegin，rend，crbegin，crend。C++14更正了这个问题。
 
-它可以在C++14工作良好，但是很遗憾，C++11不在良好之列。由于标准化的疏漏，C++11只添加了非成员函数`begin`和`end`，但是没有添加`cbegin`，`cend`，`rbegin`，`rend`，`crbegin`，`crend`。C++14修订了这个疏漏。
-
-如果你使用C++11，并且想写一个最大程度通用的代码，而你使用的STL没有提供缺失的非成员函数`cbegin`和它的朋友们，你可以简单的写下你自己的实现。比如，下面就是非成员函数`cbegin`的实现：
+如果你使用C++11，你又想写出最大限度的通用代码，并且在你使用的库中，没有一个库提供那些被遗漏的cbegin（non-member版本的）。那么朋友，你可以轻松地写出你自己的实现，举个例子，这里有一个non-member版本的cbegin的实现：
 
 ```cpp
-template <class C>
+template<class C>
 auto cbegin(const C& container)->decltype(std::begin(container))
 {
-    return std::begin(container);   //解释见下
+    return std::begin(container);               //看下面的解释
 }
 ```
+看到non-member版本的cbegin没有调用member版本的cbegin，你觉得很奇怪是吧？我也觉得奇怪，但是跟着代码看下来。cbegin模板接受任何类型的参数来表示一个“类容器”（C），并且它通过它的reference-to-const形参（container）来使用实参。如果C是一个普通的容器类型（比如，一个std::vector），container将成为一个指向const容器的引用（也就是，const std::vector<int>&）。用const容器调用non-member版本的begin函数（由C++11提供）就能产生一个`const_iterator`，并且这个iterator就是这个模板的返回值。用这样的方式来实现的优点是，对于那些提供了begin成员函数，但是没有提供cbegin成员函数的容器，能更好地工作（在C++11的non-member版本的begin中，会调用这个容器的begin成员函数）。因此，你能对只提供begin成员函数的容器，使用这个non-member版本的cbegin。
 
-你可能很惊讶非成员函数`cbegin`没有调用成员函数`cbegin`吧？我也是。但是请跟逻辑走。这个`cbegin`模板接受任何代表类似容器的数据结构的实参类型`C`，并且通过reference-to-`const`形参`container`访问这个实参。如果`C`是一个普通的容器类型（如`std::vector<int>`），`container`将会引用一个`const`版本的容器（如`const std::vector<int>&`）。对`const`容器调用非成员函数`begin`（由C++11提供）将产出`const_iterator`，这个迭代器也是模板要返回的。用这种方法实现的好处是就算容器只提供`begin`成员函数（对于容器来说，C++11的非成员函数`begin`调用这些成员函数）不提供`cbegin`成员函数也没问题。那么现在你可以将这个非成员函数`cbegin`施于只直接支持`begin`的容器。
+如果C是一个built-in数组类型，这个模板也能工作。在这种情况下，container成为一个指向const数组的引用。C++11在non-member版本的begin中，为数组提供了一个特殊的版本，这个版本的begin返回一个指向数组中第一个元素的指针。一个const数组的元素是const的，所以non-member版本的begin为const数组返回一个point-to-const的指针，并且事实上，一个point-to-const的指针对于数组来说就是一个`const_iterator`。（为了深入了解一个模板怎么为built-in数组特殊化，请看Item 1中，以指向数组的引用为参数的template类型推导的讨论。）
 
-如果`C`是原生数组，这个模板也能工作。这时，`container`成为一个`const`数组的引用。C++11为数组提供特化版本的非成员函数`begin`，它返回指向数组第一个元素的指针。一个`const`数组的元素也是`const`，所以对于`const`数组，非成员函数`begin`返回指向`const`的指针（pointer-to-`const`）。在数组的上下文中，所谓指向`const`的指针（pointer-to-`const`），也就是`const_iterator`了。
+但是话说回来，这个Item的重点是，鼓励你，每当你能使用`const_iterator`时，就去使用它。最初的动机是，只要有必要，就要使用const，但是在C++11之前的C++98中，配合iterator来使用const很不实用。而在C++11中，它非常实用，并且C++14填了少量C++11遗留下来的坑（一小部分未实现的东西）。
 
-回到最开始，本条款的中心是鼓励你只要能就使用`const_iterator`。最原始的动机——只要它有意义就加上`const`——是C++98就有的思想。但是在C++98，`const_iterator`只是一般有用，到了C++11，它就是极其有用了，C++14在其基础上做了些修补工作。
+## 你要记住的事
 
-**请记住：**
-
-+ 优先考虑`const_iterator`而非`iterator`
-+ 在最大程度通用的代码中，优先考虑非成员函数版本的`begin`，`end`，`rbegin`等，而非同名成员函数
+- 比起iterator优先使用`const_iterator`
+- 在最大限度的通用代码中，比起成员函数，优先使用non-member版本的begin，end，rbegin等等。
