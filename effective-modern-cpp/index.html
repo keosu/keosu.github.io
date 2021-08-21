@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Effective Modern CPP</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+  <style>
+    :root {
+
+      /* Tables Style*/
+      --table-head-border-color: var(--table-cell-border-color);
+      --table-head-border-width: 1px;
+      --table-cell-border-color: grey;
+      --table-cell-border-width: 1px;
+      --table-head-background: var(--mono-tint1);
+      --table-row-even-background: var(--mono-tint2);
+      --table-row-odd-background: var(--mono-tint3);
+    }
+    a {
+      color: aliceblue;
+    }
+  </style>
+</head>
+
+<body>  
+  <nav>
+    <a href="../">主页</a> |
+    <a href="#/">C++笔记</a> |
+    <a href="../effective-modern-cpp">Effective Modern C++</a> | 
+  </nav>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: '',
+      repo: '',
+      loadSidebar: true,
+      subMaxLevel: 2,
+      search: 'auto', // default 
+
+      search: {
+        paths: [
+          '/Item01-template_deduction/Item01.md',
+          '/Item02-auto_deduction/Item02.md',
+          '/Item03-decltype/Item03.md',
+          '/Item04-check_deduced_type/Item04.md',
+          '/Item05-use_auto/Item05.md',
+          '/Item06-not_use_auto/Item06.md',
+          '/Item07-initializer/Item07.md',
+          '/Item08-nullptr/Item08.md',
+          '/Item09-using_vs_typedef/Item09.md',
+          '/Item10-scoped_enum/Item10.md',
+          '/Item11-deleted/Item11.md',
+          '/Item12-override/Item12.md',
+          '/Item13-const_iterator/Item13.md',
+          '/Item14-noexcept/Item14.md',
+          '/Item15-constexpr/Item15.md',
+          '/Item16-make_const_thread_safe/Item16.md',
+          '/Item17-autogen_member_functions/Item17.md',
+          '/Item18-unique_ptr/Item18.md',
+          '/Item19-shared_ptr/Item19.md',
+          '/Item20-weak_ptr/Item20.md',
+          '/Item21-make_shared_make_uniqure/Item21.md',
+          '/Item22-Pimp_Idiom/Item22.md',
+          '/Item23-move_forward/Item23.md',
+          '/Item24-universal_reference/Item24.md',
+          '/Item25-move@rvalue_forward@universal/Item25.md',
+          '/Item26-avoid_overload@universal/Item26.md',
+          '/Item27-alternatives_to_overload@universal/Item27.md',
+          '/Item28-reference_collapsing/Item28.md',
+          '/Item29-move-failure/Item29.md',
+          '/Item30-imperfect_forward/Item30.md',
+          '/Item31-avoid_default_capture/Item31.md',
+          '/Item32-use_init_capture/Item32.md',
+          '/Item33-universal_auto_in_lambda/Item33.md',
+          '/Item34-prefer_lambda_to_bind/Item34.md',
+          '/Item35-prefer_task_to_thread/Item35.md',
+          '/Item36-async_if_asynchronicity@launch@std/Item36.md',
+          '/Item37-unjoinable/Item37.md',
+          '/Item38-varying_thread_destructor/Item38.md',
+          '/Item39-void_futures/Item39.md',
+          '/Item40-atomic_volatile@std/Item40.md',
+          '/Item41-always_copy/Item41.md',
+          '/Item42-emplace_back/Item42.md',
+        ],
+        placeholder: '搜索一下',
+        noData: '找不到结果',
+        depth: 6
+      }
+    }
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-c.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-cpp.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+</body>
+
+</html>
