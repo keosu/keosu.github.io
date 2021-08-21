@@ -75,7 +75,7 @@ auto cbegin(const C& container)->decltype(std::begin(container))
 
 但是话说回来，这个Item的重点是，鼓励你，每当你能使用`const_iterator`时，就去使用它。最初的动机是，只要有必要，就要使用const，但是在C++11之前的C++98中，配合iterator来使用const很不实用。而在C++11中，它非常实用，并且C++14填了少量C++11遗留下来的坑（一小部分未实现的东西）。
 
-## 你要记住的事
+**你要记住的事:**
 
 - 比起iterator优先使用`const_iterator`
 - 在最大限度的通用代码中，比起成员函数，优先使用non-member版本的begin，end，rbegin等等。
