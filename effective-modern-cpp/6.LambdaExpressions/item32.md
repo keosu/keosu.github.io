@@ -1,4 +1,4 @@
-# 条款三十二：使用初始化捕获来移动对象到闭包中
+# 三十二：使用初始化捕获来移动对象到闭包中
 
 **Item 32: Use init capture to move objects into closures**
 

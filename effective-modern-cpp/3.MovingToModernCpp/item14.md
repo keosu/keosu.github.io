@@ -1,4 +1,4 @@
-# 条款十四：如果函数不抛出异常请使用`noexcept`
+# 十四：如果函数不抛出异常请使用`noexcept`
 
 **Item 14: Declare functions `noexcept` if they won’t emit exceptions**
 

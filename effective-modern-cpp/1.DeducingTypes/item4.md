@@ -1,4 +1,4 @@
-# 条款四：学会查看类型推导结果
+# 四：学会查看类型推导结果
 
 **Item 4: Know how to view deduced types**
 

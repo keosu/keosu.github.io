@@ -1,4 +1,4 @@
-# 条款三十四：考虑*lambda*而非`std::bind`
+# 三十四：考虑*lambda*而非`std::bind`
 
 **Item 34: Prefer lambdas to `std::bind`**
 

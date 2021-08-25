@@ -1,4 +1,4 @@
-# 条款三：理解`decltype`
+# 三：理解`decltype`
 
 **Item 3: Understand decltype**
 

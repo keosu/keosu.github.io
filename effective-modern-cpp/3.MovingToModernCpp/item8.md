@@ -1,4 +1,4 @@
-# 条款八：优先考虑`nullptr`而非`0`和`NULL`
+# 八：优先考虑`nullptr`而非`0`和`NULL`
 
 **Item 8: Prefer `nullptr` to `0` and `NULL`**
 

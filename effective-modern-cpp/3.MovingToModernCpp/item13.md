@@ -1,4 +1,4 @@
-# 条款13: 比起iterator优先使用const_iterator
+# 13: 比起iterator优先使用const_iterator
 
 STL中的`const_iterator`等价于pointers-to-const（指向const值的指针）。它们指向的值不能被修改。使用const的标准做法是，每当你不需要修改iterator指向的值的时候，你都应该使用`const_iterator`。
 

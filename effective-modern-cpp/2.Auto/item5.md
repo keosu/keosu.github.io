@@ -6,7 +6,7 @@
 
 本章简单的覆盖了`auto`的里里外外。
 
-# 条款五：优先考虑`auto`而非显式类型声明
+# 五：优先考虑`auto`而非显式类型声明
 
 **Item 5: Prefer `auto` to explicit type declarations**
 

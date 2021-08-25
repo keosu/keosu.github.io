@@ -1,3 +1,4 @@
+* [引言](introcution.md)
 * __类型推导__
  * [1 理解模板类型推导](1.DeducingTypes/item1.md) 
  * [2 理解auto类型推导](1.DeducingTypes/item2.md)

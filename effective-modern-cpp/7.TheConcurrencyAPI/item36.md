@@ -1,4 +1,4 @@
-# 条款三十六：如果有异步的必要请指定`std::launch::async`
+# 三十六：如果有异步的必要请指定`std::launch::async`
 
 **Item 36: Specify `std::launch::async` if asynchronicity is essential.**
 

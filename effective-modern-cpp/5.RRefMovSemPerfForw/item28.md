@@ -1,4 +1,4 @@
-# 条款二十八：理解引用折叠
+# 二十八：理解引用折叠
 
 **Item 28: Understand reference collapsing**
 

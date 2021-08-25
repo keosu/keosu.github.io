@@ -1,4 +1,4 @@
-# 条款三十：熟悉完美转发失败的情况
+# 三十：熟悉完美转发失败的情况
 
 **Item 30: Familiarize yourself with perfect forwarding failure cases**
 

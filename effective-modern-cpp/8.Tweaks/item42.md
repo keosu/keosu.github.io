@@ -1,4 +1,4 @@
-# 条款四十二：考虑使用置入代替插入
+# 四十二：考虑使用置入代替插入
 
 **Item 42: Consider emplacement instead of insertion**
 

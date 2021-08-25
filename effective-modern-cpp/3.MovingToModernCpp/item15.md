@@ -1,4 +1,4 @@
-# 条款十五：尽可能的使用`constexpr`
+# 十五：尽可能的使用`constexpr`
 **Item 15: Use `constexpr` whenever possible**
 
 如果要给C++11颁一个“最令人困惑新词”奖，`constexpr`十有八九会折桂。当用于对象上面，它本质上就是`const`的加强形式，但是当它用于函数上，意思就大不相同了。有必要消除困惑，因为你绝对会用它的，特别是当你发现`constexpr` “正合吾意”的时候。

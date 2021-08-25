@@ -1,4 +1,4 @@
-# 条款三十九：对于一次性事件通信考虑使用`void`的*futures*
+# 三十九：对于一次性事件通信考虑使用`void`的*futures*
 
 **Item 39: Consider `void` futures for one-shot event communication**
 

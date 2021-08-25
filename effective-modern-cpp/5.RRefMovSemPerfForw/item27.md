@@ -1,4 +1,4 @@
-# 条款二十七：熟悉通用引用重载的替代方法
+# 二十七：熟悉通用引用重载的替代方法
 
 **Item 27: Familiarize yourself with alternatives to overloading on universal references**
 

@@ -1,4 +1,4 @@
-# 条款二：理解`auto`类型推导
+# 二：理解`auto`类型推导
 
 **Item 2: Understand `auto` type deduction**
 

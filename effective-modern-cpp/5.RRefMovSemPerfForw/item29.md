@@ -1,4 +1,4 @@
-# 条款二十九：假定移动操作不存在，成本高，未被使用
+# 二十九：假定移动操作不存在，成本高，未被使用
 
 **Item 29: Assume that move operations are not present, not cheap, and not used**
 
