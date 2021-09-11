@@ -30,7 +30,7 @@ C++代码编译运行主要步骤：
 g++ -E main.cpp -o main.i #预处理，将头文件、宏展开
 g++ -S main.i -o main.S #生成汇编代码
 g++ -c main.S -o main.o #生成目标文件
-g++ main.o -o main.out #链接成可执行文件（此处只有一个目标文件）
+g++ main.o -o main.out #链接成可执行文件（将一个或多个目标文件链接成最终可执行文件）
 ```
 
 # C++基本语法

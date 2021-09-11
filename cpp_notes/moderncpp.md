@@ -39,6 +39,74 @@
 - atomic：原子操作
 - 线程支持： mutex，future，condition_variable>  
 
+## 移动语义
+- 左值：表达式后依然存在的对象，可以取地址
+- 右值：表达式后不存在临时对象，分为纯右值(prvalue)和将亡值(xvalue)
+
+**注意**
+- 字符串字面量只有在类中才是右值，当其位于普通函数中是左值  
+- 在 C++11 之后，编译器优化会将返回对象进行此隐式右值转换  
+- 引用折叠规则： 模板形参和实参均为右值引用时，模板参数才能推导为右值引用
+
+**传参**
+- std::move 无条件转为右值
+- std::forward 保持参数的左右值属性，类似static_cast<T&&>()
+- 普通传参：始终为左值
+```cpp
+// move简单实现
+template <typename T>
+typename remove_reference<T>::type&& move(T&& param) {
+    return static_cast<typename remove_reference<T>::type&&>(param);
+}
+// forward简单实现
+template <typename T>
+T&& forward(typename std::remove_reference<T>::type& param) {
+    return static_cast<T&&>(param);
+}
+
+template <typename T>
+T&& forward(typename std::remove_reference<T>::type&& param) {
+    return static_cast<T&&>(param);
+}
+```
+- 转发引用  
+转发引用是一种特殊的引用，它保持函数实参的值类别，使得 std::forward 能用来转发实参。转发引用是下列之一：
+
+1) 函数模板的函数形参，其被声明为同一函数模板的类型模板形参的无 cv 限定的右值引用：
+```cpp
+template<class T>
+int f(T&& x) {                    // x 是转发引用
+    return g(std::forward<T>(x)); // 从而能被转发
+}
+int main() {
+    int i;
+    f(i); // 实参是左值，调用 f<int&>(int&), std::forward<int&>(x) 是左值
+    f(0); // 实参是右值，调用 f<int>(int&&), std::forward<int>(x) 是右值
+}
+ 
+template<class T>
+int g(const T&& x); // x 不是转发引用：const T 不是无 cv 限定的
+ 
+template<class T> struct A {
+    template<class U>
+    A(T&& x, U&& y, int* p); // x 不是转发引用：T 不是构造函数的类型模板形参,但 y 是转发引用
+};
+```
+2) auto&&，但当其从花括号包围的初始化器列表推导时除外：
+```cpp
+auto&& vec = foo();       // foo() 可以是左值或右值，vec 是转发引用
+auto i = std::begin(vec); // 也可以
+(*i)++;                   // 也可以
+g(std::forward<decltype(vec)>(vec)); // 转发，保持值类别
+ 
+for (auto&& x: f()) {
+  // x 是转发引用；这是使用范围 for 循环最安全的方式
+}
+ 
+auto&& z = {1, 2, 3}; // *不是*转发引用（初始化器列表的特殊情形）
+```
+
+
 # C++14
 
 ## 新语言功能特性
