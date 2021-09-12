@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"> -->
+    <meta charset="utf8">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -14,28 +14,12 @@
             <v-app id="inspire">
                 <v-navigation-drawer v-model="drawer" app clipped>
                     <v-list dense>
-                        <v-list-item link href="./">
+                        <v-list-item v-for="i in cato" link>
                             <v-list-item-action>
                                 <v-icon>mdi-view-dashboard</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
-                                <v-list-item-title>主页 </v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item link href="./cpp_notes/">
-                            <v-list-item-action>
-                                <v-icon>mdi-view-dashboard</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title> C++ Notes </v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item link href="./effective-modern-cpp/">
-                            <v-list-item-action>
-                                <v-icon>mdi-cog</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title>Effective Modern C++</v-list-item-title>
+                                <v-list-item-title>{{i}}</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
@@ -48,39 +32,17 @@
 
                 <v-main>
                     <v-container class="fill-height" fluid>
-                        <v-row align="center" justify="center">
+                        <v-row v-for="i in curlist" align="center" justify="center">
                             <v-col class="shrink">
-                                <v-tooltip right>
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn :href="source" icon large target="_blank" v-on="on">
-                                            <v-icon large>mdi-code-tags</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Source</span>
-                                </v-tooltip>
+                                <v-icon>mdi-book</v-icon>
                             </v-col>
-                        </v-row>
-                        <v-row align="center" justify="center">
-                            <v-col class="shrink">
+                            <v-col justify="center">
                                 <v-tooltip right>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn :href="source" icon large target="_blank" v-on="on">
-                                            <v-icon large>mdi-code-tags</v-icon>
+                                        <v-btn :href="i.link" left icon large target="_blank" v-on="on">{{i.title}}
                                         </v-btn>
                                     </template>
-                                    <span>Source</span>
-                                </v-tooltip>
-                            </v-col>
-                        </v-row>
-                        <v-row align="center" justify="center">
-                            <v-col class="shrink">
-                                <v-tooltip right>
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn :href="source" icon large target="_blank" v-on="on">
-                                            <v-icon large>mdi-code-tags</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Source</span>
+                                    <span>{{i.title}}</span>
                                 </v-tooltip>
                             </v-col>
                         </v-row>
@@ -88,7 +50,7 @@
                 </v-main>
 
                 <v-footer app>
-                    <span align="center" justify="center">  大道至简 </span>
+                    <span align="center" justify="center"> 大道至简 </span>
                 </v-footer>
             </v-app>
         </v-app>
@@ -96,6 +58,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="list.json"></script> -->
     <script>
         new Vue({
             el: '#app',
@@ -106,12 +70,36 @@
 
             data: () => ({
                 drawer: null,
+                list: [],
+                curlist: [],
+                cato: []
             }),
 
             created() {
                 this.$vuetify.theme.dark = true
+                var that = this
+                $.ajax({
+                    type: "get", //使用get方式
+                    url: "list.json", //json文件相对于这个HTML的路径
+                    dataType: "json",
+                    success: function (ret) {
+                        that.list = ret
+                        that.curlist = ret.cpp_books
+                        that.cato = Object.keys(ret)
+                    },
+                    error: function () {
+                        alert("请求失败");
+                    }
+                });
             },
+            methods: {
+                clickNavBar: function (txt) {
+                    console.log(txt)
+                    // this.curlist = this.list[txt]
+                }
+            }
         })
+
     </script>
 </body>
 

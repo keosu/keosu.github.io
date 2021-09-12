@@ -1,0 +1,54 @@
+{
+  "cpp_books": [
+    {
+      "title": "主页",
+      "link": "./"
+    },
+    {
+      "title": "C++笔记",
+      "link": "./cpp_notes/"
+    },
+    {
+      "title": "现代C++",
+      "link": "./effective-modern-cpp/"
+    }
+  ],
+  "games": [
+    {
+      "title": "色块迷踪",
+      "link": "./egames/color-cube"
+    },
+    {
+      "title": "弹球",
+      "link": "./egames/ball"
+    },
+    {
+      "title": "消除",
+      "link": "./egames/brick"
+    },
+    {
+      "title": "鉴别颜色",
+      "link": "./egames/color"
+    },
+    {
+      "title": "旋转色块",
+      "link": "./egames/rotate"
+    },
+    {
+      "title": "2048",
+      "link": "./egames/2048"
+    },
+    {
+      "title": "数字华容道",
+      "link": "./egames/npuzzel"
+    },
+    {
+      "title": "颜色翻转",
+      "link": "./egames/flip"
+    },
+    {
+      "title": "成语大挑战",
+      "link": "./egames/idiom"
+    }
+  ]
+}
