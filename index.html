@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf8">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
@@ -13,13 +12,15 @@
         <v-app id="inspire">
             <v-app id="inspire">
                 <v-navigation-drawer v-model="drawer" app clipped>
-                    <v-list dense>
-                        <v-list-item v-for="i in cato" link>
+                    <v-list>
+                        <v-list-item v-for="i in cato" @click="clickNavBar(i)">
                             <v-list-item-action>
                                 <v-icon>mdi-view-dashboard</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
-                                <v-list-item-title>{{i}}</v-list-item-title>
+                                <v-list-item-title>
+                                    <h2>{{i}}</h2>
+                                </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
@@ -31,15 +32,16 @@
                 </v-app-bar>
 
                 <v-main>
-                    <v-container class="fill-height" fluid>
+                    <v-container class="" fluid>
                         <v-row v-for="i in curlist" align="center" justify="center">
                             <v-col class="shrink">
-                                <v-icon>mdi-book</v-icon>
+                                <v-icon large>mdi-book</v-icon>
                             </v-col>
                             <v-col justify="center">
                                 <v-tooltip right>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn :href="i.link" left icon large target="_blank" v-on="on">{{i.title}}
+                                        <v-btn :href="i.link" large target="_blank" v-on="on">
+                                            <h1>{{i.title}}</h1>
                                         </v-btn>
                                     </template>
                                     <span>{{i.title}}</span>
@@ -59,7 +61,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- <script type="text/javascript" src="list.json"></script> -->
     <script>
         new Vue({
             el: '#app',
@@ -94,8 +95,7 @@
             },
             methods: {
                 clickNavBar: function (txt) {
-                    console.log(txt)
-                    // this.curlist = this.list[txt]
+                    this.curlist = this.list[txt]
                 }
             }
         })
