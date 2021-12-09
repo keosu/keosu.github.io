@@ -11,6 +11,10 @@
     {
       "title": "现代C++",
       "link": "./effective-modern-cpp/"
+    },
+    {
+      "title": "HPC",
+      "link": "./hpc_notes/"
     }
   ],
   "games": [
