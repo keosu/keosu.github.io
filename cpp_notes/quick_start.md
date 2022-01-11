@@ -216,6 +216,27 @@ class Derived : public Base<Derived> {
 };
 ```
 
+## 运算符重载和类型转换
+```cpp
+class A {
+  float f;
+  //类型转换函数
+  operator double() {return (double)f;} 
+  operator int() {return (int)f;}
+  operator std::string() {return std::to_string(f);}
+  
+  //  重载为成员函数
+  A operator+(const A& a); 
+	A operator++();     // 前置自增运算符
+	A operator++(int);  // 后置自增运算符
+	void operator<<(ostream& cout); // 左移运算符重载
+};
+// 重载为全局函数
+A operator+(A& a, A& b);
+ostream& operator<<(ostream& cou, A& a);
+
+```
+
 # 文件操作
 ```cpp
 #include <fstream>
